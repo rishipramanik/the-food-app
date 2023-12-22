@@ -1,12 +1,13 @@
 import React from "react";
 import Image from "../../node_modules/next/image";
 import Link from "../../node_modules/next/link";
+import CartIcon from "./CartIcon";
 import Menu from "./Menu";
 
 function Navbar() {
   const user = false;
   return (
-    <div className="h-12 text-red-500 flex items-center justify-between border-b-2 border-b-red-500 uppercase md:h-24 md:px-10 lg:px-20 xl:px-40">
+    <div className="h-12 text-red-500 flex items-center justify-between border-b-2 border-b-red-500 uppercase md:h-24 px-4 md:px-10 lg:px-20 xl:px-40">
       {/* LEFT LINKS */}
       <div className="hidden md:flex gap-4 flex-1">
         <Link href="/">Homepage</Link>
@@ -32,7 +33,7 @@ function Navbar() {
         ) : (
           <Link href="/orders">Orders</Link>
         )}
-        <Link href="/">Contact</Link>
+        <CartIcon />
       </div>
     </div>
   );
