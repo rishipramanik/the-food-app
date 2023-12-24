@@ -1,11 +1,20 @@
 "use client";
+
 import { ProductType } from "@/types/types";
+import { useCartStore } from "@/utils/store";
 import React, { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 
 function Price({ product }: { product: ProductType }) {
   const [total, setTotal] = useState(product.price);
   const [quantity, setQuantity] = useState(1);
   const [selected, setSelected] = useState(0);
+
+  const { addToCart } = useCartStore();
+
+  useEffect(() => {
+    useCartStore.persist.rehydrate();
+  }, []);
 
   useEffect(() => {
     if (product.options?.length) {
@@ -14,6 +23,20 @@ function Price({ product }: { product: ProductType }) {
       );
     }
   }, [quantity, selected, product]);
+
+  const handleCart = () => {
+    addToCart({
+      id: product.id,
+      title: product.title,
+      img: product.img,
+      price: total,
+      ...(product.options?.length && {
+        optionTitle: product.options[selected].title,
+      }),
+      quantity: quantity,
+    });
+    toast.success("The Product is added to the cart!");
+  };
 
   return (
     <div className="flex flex-col gap-4">
@@ -55,7 +78,10 @@ function Price({ product }: { product: ProductType }) {
           </div>
         </div>
         {/* CART BUTTON */}
-        <button className="uppercase bg-red-500 text-white p-2 ring-1 ring-red-500">
+        <button
+          className="uppercase bg-red-500 text-white p-2 ring-1 ring-red-500"
+          onClick={handleCart}
+        >
           Add to Cart
         </button>
       </div>
